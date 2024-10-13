@@ -9,7 +9,6 @@ import { Home } from "../js/pages/home.jsx";
 import injectContext from "../js/store/appContext.js";
 
 import { NavBar } from "./component/navbar";
-import { Footer } from "./component/footer";
 import Dashboard from "../js/pages/dashboard.jsx";
 import { Users } from "../js/pages/users.jsx";
 import { Branches } from "../js/pages/branches.jsx";
@@ -40,7 +39,6 @@ const Layout = ({ Component, pageProps }) => {
               <Route path="/usersMB" element={<UsersMB />} />
               <Route element={<h1>Not found!</h1>} />
             </Routes>
-            <Footer />
           </ScrollToTop>
         </BrowserRouter>
       </NextThemesProvider>

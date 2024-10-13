@@ -122,11 +122,7 @@ export const CreateUsersMB = () => {
   return (
     <>
       <Button auto color="primary" onClick={openModal} size="md">
-        <spam>
-          {" "}
-          Agregar Usuario MB{" "}
-          <i className="fa-solid fa-plus mr-4 ml-2 mt-4 mb-2"></i>
-        </spam>
+        <spam> Agregar Usuario MB</spam>
       </Button>
 
       <Modal backdrop={backdrop} isOpen={isOpen} onClose={onClose}>

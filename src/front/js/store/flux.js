@@ -129,6 +129,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           });
           const data = await response.json();
           if (response.ok) {
+            console.log(data);
             setStore({ users: data.users });
           }
         } catch (error) {
@@ -153,6 +154,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
           const data = await response.json();
           if (response.ok) {
+            console.log(data);
             setStore({ providers: data.providers });
           }
         } catch (error) {
@@ -177,6 +179,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
           const data = await response.json();
           if (response.ok) {
+            console.log(data);
             setStore({ branchs: data.branchs });
           }
         } catch (error) {
@@ -201,6 +204,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
           const data = await response.json();
           if (response.ok) {
+            console.log(data);
             setStore({ assets: data.assets });
           }
         } catch (error) {
@@ -225,6 +229,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
           const data = await response.json();
           if (response.ok) {
+            console.log(data);
             setStore({ usersMB: data.usersMB });
           }
         } catch (error) {
@@ -249,6 +254,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
           const data = await response.json();
           if (response.ok) {
+            console.log(data);
             setStore({ migrations: data.migrations });
           }
         } catch (error) {
