@@ -100,9 +100,6 @@ export const Providers = () => {
       <div className="flex justify-start gap-4 mt-4">
         <span className="text-lg font-bold">Gestor de Provedores</span>
       </div>
-      {items.length === 0 && (
-        <div className="text-center mt-4">No se encontraron provedores</div>
-      )}
       <Table
         aria-label="Tabla de proveedores"
         isHeaderSticky
@@ -127,7 +124,7 @@ export const Providers = () => {
                 <div className="flex items-center gap-2">
                   <Button
                     variant="link"
-                    color="danger"
+                    className="text-lg text-danger cursor-pointer"
                     onClick={() => deleteProvider(provider.id)}
                   >
                     <DeleteIcon />

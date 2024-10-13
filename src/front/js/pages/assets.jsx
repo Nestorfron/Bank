@@ -111,6 +111,13 @@ export const Assets = () => {
     </div>
   );
 
+  const getProviderById = (providerId) => {
+    const Provider = store.providers.find(
+      (provider) => provider.id === providerId
+    );
+    return Provider;
+  };
+
   useEffect(() => {
     const jwt = localStorage.getItem("token");
     if (!jwt) {
@@ -150,7 +157,7 @@ export const Assets = () => {
               <TableCell>{asset.asset_model}</TableCell>
               <TableCell>{asset.asset_serial}</TableCell>
               <TableCell>{asset.asset_inventory_number}</TableCell>
-              <TableCell>{asset.asset_provider}</TableCell>
+              <TableCell>{asset.provider_id}</TableCell>
               <TableCell>
                 <div className="flex items-center gap-2">
                   <Button variant="link" color="danger">

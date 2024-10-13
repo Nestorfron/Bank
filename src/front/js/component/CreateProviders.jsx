@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import { FormProviders } from "./FormProviders.jsx";
-import { Button, Modal, useDisclosure } from "@nextui-org/react";
+import {
+  Button,
+  Modal,
+  ModalHeader,
+  ModalContent,
+  ModalBody,
+  useDisclosure,
+} from "@nextui-org/react";
 
 export const CreateProviders = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -8,23 +15,17 @@ export const CreateProviders = () => {
 
   return (
     <>
-      <Button color="primary" auto onClick={onOpen}>
-        Añadir Proveedor
-        <i className="fa-solid fa-plus"></i>
+      <Button auto color="primary" onClick={onOpen} size="md">
+        Agregar Usuario
       </Button>
 
-      <Modal backdrop={backdrop} open={isOpen} onClose={onClose}>
-        <Modal.Header>
-          <h5>Crear Proveedor</h5>
-        </Modal.Header>
-        <Modal.Body>
-          <FormProviders btnProvider={"Crear"} />
-        </Modal.Body>
-        <Modal.Footer>
-          <Button auto color="secondary" onClick={onClose}>
-            Cerrar
-          </Button>
-        </Modal.Footer>
+      <Modal backdrop={backdrop} isOpen={isOpen} onClose={onClose}>
+        <ModalContent>
+          <ModalHeader>Crear Usuario Nuevo</ModalHeader>
+          <ModalBody>
+            <FormProviders btnProvider={"Crear"} />
+          </ModalBody>
+        </ModalContent>
       </Modal>
     </>
   );
