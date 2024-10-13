@@ -20,12 +20,23 @@ export const Home = () => {
   const [selected, setSelected] = useState("login");
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const [user, setUser] = useState({
+    user_name: "",
+    password: "",
+    names: "",
+    last_names: "",
+    employee_number: "",
+    subzone: "",
+    is_active: "",
+    role: "",
+  });
+
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const users = store.users;
 
-  const handleSubmit = async (e) => {
+  const handleSubmitLogin = async (e) => {
     e.preventDefault();
     setError("");
     const success = await actions.login(userName, password);
@@ -37,10 +48,36 @@ export const Home = () => {
     }
   };
 
+  const handleChange = (e) => {
+    setUser({ ...user, [e.target.name]: e.target.value });
+    console.log(user);
+  };
+
+  const handleSubmitSignUp = async (e) => {
+    e.preventDefault();
+    setError("");
+    const success = await actions.register(
+      user.user_name,
+      user.password,
+      user.names,
+      user.last_names,
+      user.employee_number,
+      user.subzone,
+      user.is_active,
+      user.role
+    );
+
+    if (success) {
+      navigate("/");
+    } else {
+      setError("Error al crear el usuario");
+    }
+  };
+
   return (
     <>
-      <div className="flex-col w-full ms-auto mt-10">
-        <Card className="m-auto max-w-full w-[340px] h-[400px]">
+      <div className="flex-col w-full mt-10">
+        <Card className="m-auto max-w-full w-[340px] h-[auto]">
           <CardBody className="overflow-hidden">
             <Tabs
               fullWidth
@@ -50,27 +87,26 @@ export const Home = () => {
               onSelectionChange={setSelected}
             >
               <Tab key="login" title="Login">
-                <form className="flex flex-col gap-4">
+                <form
+                  className="flex flex-col gap-4"
+                  onSubmit={handleSubmitLogin}
+                >
                   <Input
                     isRequired
-                    label="Email"
-                    placeholder="Enter your email"
-                    type="email"
+                    label="Nombre de Usuario"
+                    placeholder=""
+                    type="text"
+                    onChange={(e) => setUserName(e.target.value)}
                   />
                   <Input
                     isRequired
-                    label="Password"
-                    placeholder="Enter your password"
+                    label="Constraseña"
+                    placeholder=""
                     type="password"
+                    onChange={(e) => setPassword(e.target.value)}
                   />
-                  <p className="text-center text-small">
-                    Need to create an account?{" "}
-                    <Link size="sm" onPress={() => setSelected("sign-up")}>
-                      Sign up
-                    </Link>
-                  </p>
                   <div className="flex gap-2 justify-end">
-                    <Button fullWidth color="primary">
+                    <Button fullWidth color="primary" type="submit">
                       Login
                     </Button>
                   </div>
@@ -81,33 +117,76 @@ export const Home = () => {
                 title="Sign up"
                 className={users ? "" : "hidden"}
               >
-                <form className="flex flex-col gap-4 h-[300px]">
+                <form
+                  className="flex flex-col gap-4 h-[auto]"
+                  onSubmit={handleSubmitSignUp}
+                >
                   <Input
                     isRequired
-                    label="Name"
-                    placeholder="Enter your name"
+                    label="Nombre de Usuario"
+                    placeholder=""
+                    type="text"
+                    name="user_name"
+                    onChange={handleChange}
+                  />
+                  <Input
+                    isRequired
+                    label="Nombres"
+                    placeholder=""
+                    type="text"
+                    name="names"
+                    onChange={handleChange}
+                  />
+                  <Input
+                    isRequired
+                    label="Apellidos"
+                    placeholder=""
+                    type="text"
+                    name="last_names"
+                    onChange={handleChange}
+                  />
+                  <Input
+                    isRequired
+                    label="Número de Empleado"
+                    placeholder=""
+                    type="text"
+                    name="employee_number"
+                    onChange={handleChange}
+                  />
+                  <Input
+                    isRequired
+                    label="Sucursal"
+                    placeholder=""
+                    type="text"
+                    name="subzone"
+                    onChange={handleChange}
+                  />
+                  <Input
+                    isRequired
+                    label="Estado"
+                    placeholder=""
+                    type="text"
+                    name="is_active"
+                    onChange={handleChange}
+                  />
+                  <Input
+                    isRequired
+                    label="Rol"
+                    placeholder=""
+                    type="text"
+                    name="role"
+                    onChange={handleChange}
+                  />
+                  <Input
+                    isRequired
+                    label="Contraseña"
+                    placeholder=""
                     type="password"
+                    name="password"
+                    onChange={handleChange}
                   />
-                  <Input
-                    isRequired
-                    label="Email"
-                    placeholder="Enter your email"
-                    type="email"
-                  />
-                  <Input
-                    isRequired
-                    label="Password"
-                    placeholder="Enter your password"
-                    type="password"
-                  />
-                  <p className="text-center text-small">
-                    Already have an account?{" "}
-                    <Link size="sm" onPress={() => setSelected("login")}>
-                      Login
-                    </Link>
-                  </p>
                   <div className="flex gap-2 justify-end">
-                    <Button fullWidth color="primary">
+                    <Button fullWidth color="primary" type="submit">
                       Sign up
                     </Button>
                   </div>
