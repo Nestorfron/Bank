@@ -1,16 +1,27 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
+import { Context } from "../store/appContext";
+import { useNavigate } from "react-router-dom";
 import { useTheme } from "next-themes";
 import "../../styles/output.css";
 import { Button } from "@nextui-org/react";
 
 const Dashboard = () => {
+  const { store, actions } = useContext(Context);
   const { theme, setTheme } = useTheme();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const jwt = localStorage.getItem("token");
+    if (!jwt) {
+      navigate("/");
+      return;
+    }
+    actions.getMe();
+  }, []);
 
   return (
     <div>
-      The current theme is: {theme}
-      <Button onClick={() => setTheme("light")}>Light Mode</Button>
-      <Button onClick={() => setTheme("dark")}>Dark Mode</Button>
+      <h1>Dashboard</h1>
     </div>
   );
 };

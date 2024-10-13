@@ -108,6 +108,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           });
           const data = await response.json();
           if (response.ok) {
+            console.log(data);
             setStore({ me: data });
           }
         } catch (error) {
