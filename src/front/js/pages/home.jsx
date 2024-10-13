@@ -75,6 +75,12 @@ export const Home = () => {
   };
 
   useEffect(() => {
+    const jwt = localStorage.getItem("token");
+    if (!jwt) {
+      navigate("/");
+      return;
+    }
+    actions.getMe();
     actions.getUsers();
   }, []);
 

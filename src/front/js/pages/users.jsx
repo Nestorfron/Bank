@@ -1,9 +1,9 @@
-import React, { useContext, useState, useMemo } from "react";
+import React, { useContext, useState, useMemo, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 import Swal from "sweetalert2";
 import { DeleteIcon } from "../../img/icons/DeleteIcon.jsx";
 import { SearchIcon } from "../../img/icons/SearchIcon.jsx";
-
 import {
   Avatar,
   Button,
@@ -21,6 +21,7 @@ import {
   Pagination,
   Chip,
 } from "@nextui-org/react";
+import useTokenExpiration from "../../../hooks/useTokenExpiration.jsx";
 
 const statusColorMap = {
   active: "success",
@@ -28,11 +29,14 @@ const statusColorMap = {
 };
 
 export const Users = () => {
-  const { store } = useContext(Context);
+  const { store, actions } = useContext(Context);
+  const navigate = useNavigate();
   const [filterValue, setFilterValue] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [page, setPage] = useState(1);
+
+  useTokenExpiration();
 
   const filteredItems = useMemo(() => {
     let filteredUsers = [...store.users];
@@ -105,6 +109,16 @@ export const Users = () => {
       <Pagination showControls page={page} total={pages} onChange={setPage} />
     </div>
   );
+
+  useEffect(() => {
+    const jwt = localStorage.getItem("token");
+    if (!jwt) {
+      navigate("/");
+      return;
+    }
+    actions.getMe();
+    actions.getUsers();
+  }, []);
 
   return (
     <>
