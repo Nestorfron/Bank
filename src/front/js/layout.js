@@ -14,6 +14,7 @@ import { Users } from "../js/pages/users.jsx";
 import { Branches } from "../js/pages/branches.jsx";
 import { Assets } from "../js/pages/assets.jsx";
 import { UsersMB } from "../js/pages/usersMB.jsx";
+import { Migrations } from "../js/pages/migrations.jsx";
 
 //create your first component
 const Layout = ({ Component, pageProps }) => {
@@ -37,6 +38,7 @@ const Layout = ({ Component, pageProps }) => {
               <Route path="/branches" element={<Branches />} />
               <Route path="/assets" element={<Assets />} />
               <Route path="/usersMB" element={<UsersMB />} />
+              <Route path="/migrations" element={<Migrations />} />
               <Route element={<h1>Not found!</h1>} />
             </Routes>
           </ScrollToTop>
