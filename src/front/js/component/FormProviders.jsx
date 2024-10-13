@@ -99,51 +99,53 @@ export const FormProviders = ({
   }, [initialProvider, actions, navigate]);
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <Select
-        name="branch_id"
-        value={provider.branch_id}
-        onChange={(e) =>
-          setProvider({ ...provider, branch_id: e.target.value })
-        }
-        required
-      >
-        <SelectItem value="">Selecciona una Sucursal</SelectItem>
-        {store.branchs.map((branch) => (
-          <SelectItem key={branch.id} value={branch.id}>
-            {branch.branch_cr}
-          </SelectItem>
-        ))}
-      </Select>
+    <form onSubmit={handleSubmit}>
+      <div className="flex flex-col gap-4">
+        <Select
+          label="Sucursal"
+          name="branch_id"
+          value={provider.branch_id}
+          onChange={(e) =>
+            setProvider({ ...provider, branch_id: e.target.value })
+          }
+          required
+        >
+          {store.branchs.map((branch) => (
+            <SelectItem key={branch.id} value={branch.id}>
+              {branch.branch_cr}
+            </SelectItem>
+          ))}
+        </Select>
 
-      <Input
-        label="Nombre de la Compañia"
-        name="company_name"
-        value={provider.company_name}
-        onChange={handleChange}
-        required
-      />
+        <Input
+          label="Nombre de la Compañia"
+          name="company_name"
+          value={provider.company_name}
+          onChange={handleChange}
+          required
+        />
 
-      <Input
-        label="RFC"
-        name="rfc"
-        value={provider.rfc}
-        onChange={handleChange}
-        required
-      />
+        <Input
+          label="RFC"
+          name="rfc"
+          value={provider.rfc}
+          onChange={handleChange}
+          required
+        />
 
-      <Input
-        label="Servicio"
-        name="service"
-        value={provider.service}
-        onChange={handleChange}
-        required
-      />
+        <Input
+          label="Servicio"
+          name="service"
+          value={provider.service}
+          onChange={handleChange}
+          required
+        />
 
-      <div className="flex justify-end">
-        <Button type="submit" color="primary" disabled={loading}>
-          {btnProvider}
-        </Button>
+        <div className="flex justify-end">
+          <Button type="submit" color="primary" disabled={loading}>
+            {btnProvider}
+          </Button>
+        </div>
       </div>
     </form>
   );

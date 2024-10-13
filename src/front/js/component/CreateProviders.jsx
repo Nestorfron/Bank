@@ -16,12 +16,12 @@ export const CreateProviders = () => {
   return (
     <>
       <Button auto color="primary" onClick={onOpen} size="md">
-        Agregar Usuario
+        Agregar Proveedor
       </Button>
 
       <Modal backdrop={backdrop} isOpen={isOpen} onClose={onClose}>
         <ModalContent>
-          <ModalHeader>Crear Usuario Nuevo</ModalHeader>
+          <ModalHeader>Crear Proveedor</ModalHeader>
           <ModalBody>
             <FormProviders btnProvider={"Crear"} />
           </ModalBody>

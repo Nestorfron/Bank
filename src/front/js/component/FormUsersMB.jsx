@@ -1,7 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
-import { Input, Button, Spacer, ModalFooter, user } from "@nextui-org/react";
+import {
+  Input,
+  Button,
+  Spacer,
+  ModalFooter,
+  Select,
+  SelectItem,
+  Switch,
+} from "@nextui-org/react";
 import Swal from "sweetalert2";
 
 export const FormUsers_MB = ({ id, btnUserMB, userMB: initialUserMB }) => {
@@ -16,12 +24,17 @@ export const FormUsers_MB = ({ id, btnUserMB, userMB: initialUserMB }) => {
     employee_number: "",
     branch_id: "",
     asset_id: "",
+    is_active: false,
   });
 
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setUserMB({ ...userMB, [e.target.name]: e.target.value });
+  };
+
+  const setIs_activeOnOff = (checked) => {
+    setUserMB({ ...userMB, is_active: checked });
   };
 
   const handleSubmit = async (e) => {
@@ -54,16 +67,18 @@ export const FormUsers_MB = ({ id, btnUserMB, userMB: initialUserMB }) => {
             userMB.last_names,
             userMB.employee_number,
             userMB.branch_id,
-            userMB.asset_id
+            userMB.asset_id,
+            userMB.is_active
           )
-        : await actions.add_User_MB(
+        : await actions.add_userMB(
             userMB.user_name_MB,
             userMB.is_active,
             userMB.names,
             userMB.last_names,
             userMB.employee_number,
             userMB.branch_id,
-            userMB.asset_id
+            userMB.asset_id,
+            userMB.is_active
           );
 
       Swal.fire({
@@ -91,6 +106,7 @@ export const FormUsers_MB = ({ id, btnUserMB, userMB: initialUserMB }) => {
           employee_number: "",
           branch_id: "",
           asset_id: "",
+          is_active: false,
         });
       }
     } catch (error) {
@@ -127,6 +143,7 @@ export const FormUsers_MB = ({ id, btnUserMB, userMB: initialUserMB }) => {
         employee_number: initialUserMB.employee_number || "",
         branch_id: initialUserMB.branch_id || "",
         asset_id: initialUserMB.asset_id || "",
+        is_active: initialUserMB.is_active || false,
       });
     }
   }, []);
@@ -135,28 +152,13 @@ export const FormUsers_MB = ({ id, btnUserMB, userMB: initialUserMB }) => {
       <div className="flex flex-col gap-4">
         <Input
           label="Nombre de Usuario MB"
-          placeholder="Ingrese el nombre de usuario MB"
-          labelPlacement="outside"
           name="user_name_MB"
           value={userMB.user_name_MB}
           onChange={handleChange}
           required
         />
-        <select
-          label="Estado"
-          name="is_active"
-          value={userMB.is_active}
-          onChange={handleChange}
-          required
-        >
-          <option value="">Seleccione el estado</option>
-          <option value="true">Activo</option>
-          <option value="false">Inactivo</option>
-        </select>
         <Input
           label="Nombres"
-          placeholder="Ingrese los nombres"
-          labelPlacement="outside"
           name="names"
           value={userMB.names}
           onChange={handleChange}
@@ -164,8 +166,6 @@ export const FormUsers_MB = ({ id, btnUserMB, userMB: initialUserMB }) => {
         />
         <Input
           label="Apellidos"
-          placeholder="Ingrese los apellidos"
-          labelPlacement="outside"
           name="last_names"
           value={userMB.last_names}
           onChange={handleChange}
@@ -173,31 +173,34 @@ export const FormUsers_MB = ({ id, btnUserMB, userMB: initialUserMB }) => {
         />
         <Input
           label="Numero de Empleado"
-          placeholder="Ingrese el numero de empleado"
-          labelPlacement="outside"
           name="employee_number"
           value={userMB.employee_number}
           onChange={handleChange}
           required
         />
 
-        <select
+        <Select
+          label="Sucursal"
+          placeholder={userMB.branch_id}
           name="branch_id"
+          required
           value={userMB.branch_id}
           onChange={handleChange}
-          required
         >
-          <option value="" disabled>
-            Seleccione la sucursal a la que pertenece
-          </option>
           {store.branchs.map((branch) => (
-            <option key={branch.branch_id} value={branch.branch_id}>
+            <SelectItem key={branch.id} value={branch.id}>
               {branch.branch_cr}
-            </option>
+            </SelectItem>
           ))}
-        </select>
+        </Select>
+        <div className="flex items-center">
+          <Switch
+            checked={userMB.is_active}
+            onChange={(e) => setIs_activeOnOff(e.target.checked)}
+          />
+          <label className="ml-2">Activo</label>
+        </div>
       </div>
-
       <Spacer />
       <ModalFooter>
         <Button type="submit" color="primary" disabled={loading}>

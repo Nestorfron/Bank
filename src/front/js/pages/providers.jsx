@@ -97,12 +97,13 @@ export const Providers = () => {
 
   return (
     <>
-      <div className="flex justify-start gap-4 mt-4">
+      <div className="flex justify-start gap-4 mt-4 mb-4">
         <span className="text-lg font-bold">Gestor de Provedores</span>
       </div>
       <Table
         aria-label="Tabla de proveedores"
         isHeaderSticky
+        isStriped
         topContent={topContent}
         bottomContent={bottomContent}
       >

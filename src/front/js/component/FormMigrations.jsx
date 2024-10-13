@@ -8,6 +8,7 @@ import {
   ModalFooter,
   user,
   Select,
+  SelectItem,
 } from "@nextui-org/react";
 import Swal from "sweetalert2";
 
@@ -17,6 +18,7 @@ export const FormMigrations = ({
   migration: initialMigration,
 }) => {
   const { store, actions } = useContext(Context);
+  const [provider, setProvider] = useState("");
   const navigate = useNavigate();
   const [migration, setMigration] = useState({
     installation_date: "",
@@ -116,6 +118,19 @@ export const FormMigrations = ({
     }
   };
 
+  const options = [
+    { value: "Ordered", label: "Ordenada" },
+    { value: "In progress", label: "En proceso" },
+    { value: "Completed", label: "Completada" },
+  ];
+
+  const getProviderById = (providerId) => {
+    const Provider = store.providers.find(
+      (provider) => provider.id === providerId
+    );
+    setProvider(Provider);
+  };
+
   useEffect(() => {
     const jwt = localStorage.getItem("token");
     if (!jwt) {
@@ -134,15 +149,13 @@ export const FormMigrations = ({
         branch_id: initialMigration.branch_id || "",
       });
     }
-  }, [initialMigration, actions, navigate]);
+  }, []);
 
   return (
     <form onSubmit={handleSubmit}>
       <div className="flex flex-col gap-4">
         <Input
           label="Fecha de Instalación"
-          placeholder="Ingrese la fecha de instalación"
-          labelPlacement="outside"
           name="installation_date"
           type="date"
           value={migration.installation_date}
@@ -151,8 +164,6 @@ export const FormMigrations = ({
         />
         <Input
           label="Fecha de Migración"
-          placeholder="Ingrese la fecha de migración"
-          labelPlacement="outside"
           name="migration_date"
           type="date"
           value={migration.migration_date}
@@ -161,8 +172,6 @@ export const FormMigrations = ({
         />
         <Input
           label="Descripción de la Migración"
-          placeholder="Ingrese la descripción de la migración"
-          labelPlacement="outside"
           name="migration_description"
           value={migration.migration_description}
           onChange={handleChange}
@@ -170,46 +179,42 @@ export const FormMigrations = ({
         />
         <Select
           label="Estado de la Migración"
-          placeholder="Seleccione el estado de la migración"
-          labelPlacement="outside"
           name="migration_status"
           value={migration.migration_status}
           onChange={handleChange}
           required
         >
-          <option value="Ordenada">Ordenada</option>
-          <option value="En proceso">En proceso</option>
-          <option value="Completada">Compleatada</option>
+          {options.map((option) => (
+            <SelectItem key={SelectItem.value} value={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
         </Select>
         <Select
-          label="Proveedor"
-          placeholder="Seleccione el proveedor"
-          labelPlacement="outside"
+          label="Selecciona un proveedor"
           name="provider_id"
+          required
           value={migration.provider_id}
           onChange={handleChange}
-          required
         >
           {store.providers.map((provider) => (
-            <option key={provider.id} value={provider.id}>
+            <SelectItem key={provider.id} value={provider.id}>
               {provider.company_name}
-            </option>
+            </SelectItem>
           ))}
         </Select>
 
         <Select
           label="Sucursal"
-          placeholder="Seleccione la sucursal"
-          labelPlacement="outside"
           name="branch_id"
+          required
           value={migration.branch_id}
           onChange={handleChange}
-          required
         >
           {store.branchs.map((branch) => (
-            <option key={branch.id} value={branch.id}>
+            <SelectItem key={branch.id} value={branch.id}>
               {branch.branch_cr}
-            </option>
+            </SelectItem>
           ))}
         </Select>
       </div>
