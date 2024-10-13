@@ -20,7 +20,6 @@ import {
   DropdownItem,
   Avatar,
 } from "@nextui-org/react";
-import { u } from "framer-motion/client";
 
 export const NavBar = () => {
   const { store, actions } = useContext(Context);
@@ -125,25 +124,61 @@ export const NavBar = () => {
         </button>
       </NavbarItem>
       <NavbarMenu>
-        <ul className="flex flex-col space-y-2 p-4 bg-black">
-          {[
-            "users",
-            "branches",
-            "provider",
-            "assets",
-            "usersMb",
-            "migrations",
-          ].map((item) => (
-            <li key={item}>
-              <Button
-                onClick={() => navigate(`/${item}`)}
-                variant="link"
-                className=" w-full text-left"
-              >
-                {item.charAt(0).toUpperCase() + item.slice(1)}
-              </Button>
-            </li>
-          ))}
+        <ul>
+          <li>
+            <Button
+              {...(!jwt && { isDisabled: true })}
+              onClick={() => navigate("/users")}
+              variant="link"
+            >
+              Usuarios
+            </Button>
+          </li>
+          <li className="gap-2">
+            <Button
+              {...(!jwt && { isDisabled: true })}
+              onClick={() => navigate("/branches")}
+              variant="link"
+            >
+              Sucursales
+            </Button>
+          </li>
+          <li>
+            <Button
+              {...(!jwt && { isDisabled: true })}
+              onClick={() => navigate("/provider")}
+              variant="link"
+            >
+              Proveedores
+            </Button>
+          </li>
+          <li>
+            <Button
+              {...(!jwt && { isDisabled: true })}
+              onClick={() => navigate("/assets")}
+              variant="link"
+            >
+              Activos
+            </Button>
+          </li>
+          <li>
+            <Button
+              {...(!jwt && { isDisabled: true })}
+              onClick={() => navigate("/usersMb")}
+              variant="link"
+            >
+              Usuarios MB
+            </Button>
+          </li>
+          <li>
+            <Button
+              {...(!jwt && { isDisabled: true })}
+              onClick={() => navigate("/migrations")}
+              variant="link"
+            >
+              Migraciones
+            </Button>
+          </li>
         </ul>
       </NavbarMenu>
       <NavbarItem isActive>
@@ -155,16 +190,6 @@ export const NavBar = () => {
               color="primary"
               variant="light"
             />
-            {/* <Avatar
-              isBordered
-              as="button"
-              color="secondary"
-              name="User"
-              size="md"
-              src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
-              className="mb-2 mt-2"
-              {...(!jwt && { isDisabled: true })}
-            /> */}
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
             <DropdownItem key="profile" className="h-14 gap-2">
