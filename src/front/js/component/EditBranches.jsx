@@ -22,9 +22,7 @@ export const EditBranches = ({ branch }) => {
   return (
     <>
       <Button variant="link" content="Edit sucursal" auto onClick={openModal}>
-        <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-          <EditIcon />
-        </span>
+        <EditIcon className="text-lg text-default-400 cursor-pointer active:opacity-50" />
       </Button>
 
       <Modal backdrop={backdrop} isOpen={isOpen} onClose={onClose}>

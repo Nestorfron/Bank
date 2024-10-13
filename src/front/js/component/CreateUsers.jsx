@@ -1,17 +1,22 @@
 import React, { useState } from "react";
 import { FormUsers } from "./FormUsers.jsx";
-import { Button, Modal, ModalHeader, ModalContent, ModalBody, useDisclosure } from "@nextui-org/react";
+import {
+  Button,
+  Modal,
+  ModalHeader,
+  ModalContent,
+  ModalBody,
+  useDisclosure,
+} from "@nextui-org/react";
 
 export const CreateUsers = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [backdrop, setBackdrop] = useState("blur");
 
-
   return (
     <>
       <Button auto color="primary" onClick={onOpen} size="md">
         Agregar Usuario
-        <i className="fa-solid fa-plus"></i>
       </Button>
 
       <Modal backdrop={backdrop} isOpen={isOpen} onClose={onClose}>

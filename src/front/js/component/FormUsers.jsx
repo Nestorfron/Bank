@@ -1,7 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
-import { Input, Button, Spacer, Switch, ModalFooter } from "@nextui-org/react";
+import {
+  Input,
+  Button,
+  Spacer,
+  Switch,
+  ModalFooter,
+  Select,
+  SelectItem,
+} from "@nextui-org/react";
 import Swal from "sweetalert2";
 
 export const FormUsers = ({ id, btnUser, user: initialUser }) => {
@@ -113,14 +121,13 @@ export const FormUsers = ({ id, btnUser, user: initialUser }) => {
         is_active: initialUser.is_active || false,
       });
     }
-  }, [initialUser, actions, navigate]);
+  }, []);
 
   return (
     <form onSubmit={handleSubmit}>
       <div className="flex flex-col gap-4">
         <Input
           label="Nombre de Usuario"
-          placeholder="Ingrese el nombre de usuario"
           name="user_name"
           value={user.user_name}
           onChange={handleChange}
@@ -128,7 +135,6 @@ export const FormUsers = ({ id, btnUser, user: initialUser }) => {
         />
         <Input
           label="Contraseña"
-          placeholder="Ingrese la contraseña"
           type="password"
           name="password"
           value={user.password}
@@ -137,7 +143,6 @@ export const FormUsers = ({ id, btnUser, user: initialUser }) => {
         />
         <Input
           label="Nombres"
-          placeholder="Ingrese los nombres"
           name="names"
           value={user.names}
           onChange={handleChange}
@@ -145,7 +150,6 @@ export const FormUsers = ({ id, btnUser, user: initialUser }) => {
         />
         <Input
           label="Apellidos"
-          placeholder="Ingrese los apellidos"
           name="last_names"
           value={user.last_names}
           onChange={handleChange}
@@ -153,7 +157,6 @@ export const FormUsers = ({ id, btnUser, user: initialUser }) => {
         />
         <Input
           label="Número de Empleado"
-          placeholder="Ingrese el número de empleado"
           name="employee_number"
           value={user.employee_number}
           onChange={handleChange}
@@ -161,20 +164,25 @@ export const FormUsers = ({ id, btnUser, user: initialUser }) => {
         />
         <Input
           label="Subzona"
-          placeholder="Ingrese la subzona"
           name="subzone"
           value={user.subzone}
           onChange={handleChange}
           required
         />
-        <select name="role" value={user.role} onChange={handleChange} required>
-          <option value="">Selecciona un rol</option>
-          {store.role.map((role, index) => (
-            <option key={index} value={role}>
+        <Select
+          label="Rol"
+          placeholder={user.role}
+          name="role"
+          required
+          value={user.role}
+          onChange={handleChange}
+        >
+          {store.role.map((role) => (
+            <SelectItem key={role} value={role}>
               {role}
-            </option>
+            </SelectItem>
           ))}
-        </select>
+        </Select>
         <div className="flex items-center">
           <Switch
             checked={user.is_active}

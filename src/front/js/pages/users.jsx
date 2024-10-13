@@ -4,6 +4,8 @@ import { Context } from "../store/appContext";
 import Swal from "sweetalert2";
 import { DeleteIcon } from "../../img/icons/DeleteIcon.jsx";
 import { SearchIcon } from "../../img/icons/SearchIcon.jsx";
+import { CreateUsers } from "../component/CreateUsers.jsx";
+import { EditUsers } from "../component/EditUsers.jsx";
 import {
   Avatar,
   Button,
@@ -61,10 +63,6 @@ export const Users = () => {
     return filteredItems.slice(start, start + rowsPerPage);
   }, [page, filteredItems, rowsPerPage]);
 
-  const handleDeleteUser = (userId) => {
-    Swal.fire("User deleted!", "", "success");
-  };
-
   const topContent = (
     <div className="flex justify-between gap-3 items-center">
       <div className="flex justify-start gap-3 items-center">
@@ -96,9 +94,7 @@ export const Users = () => {
           </DropdownMenu>
         </Dropdown>
         <div>
-          <Button color="primary" className="items-center gap-2">
-            Crear Usuario
-          </Button>
+          <CreateUsers />
         </div>
       </div>
     </div>
@@ -137,7 +133,6 @@ export const Users = () => {
       >
         <TableHeader>
           <TableColumn>ID</TableColumn>
-          <TableColumn>Avatar</TableColumn>
           <TableColumn>Usuario</TableColumn>
           <TableColumn>Nombre(s)</TableColumn>
           <TableColumn>Apellidos</TableColumn>
@@ -151,14 +146,6 @@ export const Users = () => {
           {items.map((user) => (
             <TableRow key={user.id}>
               <TableCell>{user.id}</TableCell>
-              <TableCell>
-                <Avatar
-                  src={
-                    user.avatar ||
-                    "https://i.pravatar.cc/150?u=a042581f4e29026024d"
-                  }
-                />
-              </TableCell>
               <TableCell>{user.user_name}</TableCell>
               <TableCell>{user.names}</TableCell>
               <TableCell>{user.last_names}</TableCell>
@@ -173,13 +160,9 @@ export const Users = () => {
                 </Chip>
               </TableCell>
               <TableCell>
-                <Button
-                  variant="link"
-                  color="danger"
-                  onClick={() => handleDeleteUser(user.id)}
-                >
-                  <DeleteIcon />
-                </Button>
+                <div className="flex items-center gap-2">
+                  <EditUsers user={user} />
+                </div>
               </TableCell>
             </TableRow>
           ))}

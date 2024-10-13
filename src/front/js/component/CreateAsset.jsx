@@ -118,7 +118,7 @@ export const CreateAssets = () => {
   return (
     <>
       <Button auto color="primary" onClick={openModal} size="md">
-        <spam> Agregar Activo</spam>
+        <span> Agregar Activo</span>
       </Button>
 
       <Modal backdrop={backdrop} isOpen={isOpen} onClose={onClose}>

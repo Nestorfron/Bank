@@ -44,17 +44,17 @@ export const NavBar = () => {
 
   return (
     <NextUINavbar isBordered maxWidth="xl" position="sticky">
+      <NavbarBrand className="gap-3 max-w-fit">
+        <button
+          className="flex justify-start items-center gap-1 "
+          color="foreground"
+          onClick={() => navigate("/dashboard")}
+        >
+          <Avatar src={img} alt="DR-App" />
+        </button>
+      </NavbarBrand>
       <NavbarContent className="" justify="start">
         <NavbarMenuToggle size="lg" className="sm:hidden" />
-        <NavbarBrand className="gap-3 max-w-fit ">
-          <button
-            className="flex justify-start items-center gap-1 "
-            color="foreground"
-            onClick={() => navigate("/dashboard")}
-          >
-            <Avatar src={img} alt="DR-App" className="h-12 w-15 " />
-          </button>
-        </NavbarBrand>
         <div className="hidden sm:flex gap-4 justify- ml-2">
           <NavbarContent>
             <NavbarItem>
@@ -78,7 +78,7 @@ export const NavBar = () => {
             <NavbarItem>
               <Button
                 {...(!jwt && { isDisabled: true })}
-                onClick={() => navigate("/provider")}
+                onClick={() => navigate("/providers")}
                 variant="link"
               >
                 Proveedores

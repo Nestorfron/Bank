@@ -95,7 +95,7 @@ export const CreateBranches = () => {
   return (
     <>
       <Button auto color="primary" onClick={openModal} size="md">
-        <spam> Agregar Sucursal</spam>
+        <span> Agregar Sucursal</span>
       </Button>
 
       <Modal backdrop={backdrop} isOpen={isOpen} onClose={onClose}>
