@@ -125,6 +125,7 @@ export const Migrations = () => {
       <Table
         aria-label="Tabla de sucursales"
         isHeaderSticky
+        isStriped
         topContent={topContent}
         bottomContent={bottomContent}
       >

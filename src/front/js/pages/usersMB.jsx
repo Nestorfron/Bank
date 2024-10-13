@@ -127,6 +127,7 @@ export const UsersMB = () => {
       <Table
         aria-label="Tabla de Usuarios MB"
         isHeaderSticky
+        isStriped
         topContent={topContent}
         bottomContent={bottomContent}
       >

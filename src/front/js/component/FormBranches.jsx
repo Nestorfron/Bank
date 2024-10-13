@@ -111,7 +111,7 @@ export const FormBranches = ({ id, btnBranch, branch: initialBranch }) => {
         branch_subzone: initialBranch.branch_subzone || "",
       });
     }
-  }, [initialBranch, actions, navigate]);
+  }, []);
 
   return (
     <form onSubmit={handleSubmit}>

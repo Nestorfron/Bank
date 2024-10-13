@@ -35,7 +35,7 @@ export const EditAssets = ({ asset }) => {
             Editar Activo
           </ModalHeader>
           <ModalBody>
-            <FormAssets btnAsset={"Actualizar"} branch={asset} id={asset.id} />
+            <FormAssets btnAsset={"Actualizar"} asset={asset} id={asset.id} />
           </ModalBody>
         </ModalContent>
       </Modal>

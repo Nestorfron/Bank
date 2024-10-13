@@ -118,6 +118,7 @@ export const Assets = () => {
       return;
     }
     actions.getMe();
+    actions.getAssets();
   }, []);
 
   return (
@@ -128,6 +129,7 @@ export const Assets = () => {
       <Table
         aria-label="Tabla de activos"
         isHeaderSticky
+        isStriped
         topContent={topContent}
         bottomContent={bottomContent}
       >
