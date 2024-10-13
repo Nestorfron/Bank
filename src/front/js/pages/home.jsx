@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 import {
@@ -74,10 +74,17 @@ export const Home = () => {
     }
   };
 
+  useEffect(() => {
+    actions.getUsers();
+  }, []);
+
   return (
     <>
       <div className="flex-col w-full mt-10">
         <Card className="m-auto max-w-full w-[340px] h-[auto]">
+          <div className="img-container m-auto pb-5">
+            <img src={img} alt="DR-App" height={200} width={200} />
+          </div>
           <CardBody className="overflow-hidden">
             <Tabs
               fullWidth
@@ -86,7 +93,7 @@ export const Home = () => {
               selectedKey={selected}
               onSelectionChange={setSelected}
             >
-              <Tab key="login" title="Login">
+              <Tab key="login" title="Iniciar Sesión">
                 <form
                   className="flex flex-col gap-4"
                   onSubmit={handleSubmitLogin}
@@ -107,7 +114,7 @@ export const Home = () => {
                   />
                   <div className="flex gap-2 justify-end">
                     <Button fullWidth color="primary" type="submit">
-                      Login
+                      Enviar
                     </Button>
                   </div>
                 </form>
@@ -115,7 +122,7 @@ export const Home = () => {
               <Tab
                 key="sign-up"
                 title="Sign up"
-                className={users ? "" : "hidden"}
+                className={users.id !== 0 ? "hidden" : ""}
               >
                 <form
                   className="flex flex-col gap-4 h-[auto]"
