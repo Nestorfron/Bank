@@ -2,7 +2,6 @@ import React, { useContext, useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 import Swal from "sweetalert2";
-import { DeleteIcon } from "../../img/icons/DeleteIcon.jsx";
 import { SearchIcon } from "../../img/icons/SearchIcon.jsx";
 import { CreateUsers } from "../component/CreateUsers.jsx";
 import { EditUsers } from "../component/EditUsers.jsx";
@@ -118,19 +117,19 @@ export const Users = () => {
 
   return (
     <>
-      <div className="flex justify-start gap-4 mt-4">
-        {" "}
+      <div className="flex justify-start gap-4 mt-4 mb-4">
         <span className="text-lg font-bold"> Gestor de Usuarios</span>
       </div>
-      {items.length === 0 && (
-        <div className="text-center mt-4">No se encontraron usuarios</div>
-      )}
       <Table
         aria-label="Tabla de usuarios"
         isHeaderSticky
         isStriped
         topContent={topContent}
         bottomContent={bottomContent}
+        classNames={{
+          td: "text-center",
+          th: "text-center",
+        }}
       >
         <TableHeader>
           <TableColumn>ID</TableColumn>
@@ -161,9 +160,7 @@ export const Users = () => {
                 </Chip>
               </TableCell>
               <TableCell>
-                <div className="flex items-center gap-2">
-                  <EditUsers user={user} />
-                </div>
+                <EditUsers user={user} />
               </TableCell>
             </TableRow>
           ))}

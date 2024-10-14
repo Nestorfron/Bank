@@ -59,7 +59,7 @@ export const FormUsers_MB = ({ id, btnUserMB, userMB: initialUserMB }) => {
     });
     try {
       const response = id
-        ? await actions.editUser_MB(
+        ? await actions.editUserMB(
             id,
             userMB.user_name_MB,
             userMB.is_active,
@@ -134,6 +134,7 @@ export const FormUsers_MB = ({ id, btnUserMB, userMB: initialUserMB }) => {
       return;
     }
     actions.getUsersMB();
+    actions.getAssets();
     if (initialUserMB) {
       setUserMB({
         user_name_MB: initialUserMB.user_name_MB || "",
@@ -193,6 +194,22 @@ export const FormUsers_MB = ({ id, btnUserMB, userMB: initialUserMB }) => {
             </SelectItem>
           ))}
         </Select>
+
+        <Select
+          label="Activo"
+          placeholder={userMB.asset_id}
+          name="asset_id"
+          required
+          value={userMB.asset_id}
+          onChange={handleChange}
+        >
+          {store.assets.map((asset) => (
+            <SelectItem key={asset.id} value={asset.id}>
+              {asset.asset_inventory_number}
+            </SelectItem>
+          ))}
+        </Select>
+
         <div className="flex items-center">
           <Switch
             checked={userMB.is_active}

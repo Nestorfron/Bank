@@ -139,6 +139,10 @@ export const Assets = () => {
         isStriped
         topContent={topContent}
         bottomContent={bottomContent}
+        classNames={{
+          td: "text-center",
+          th: "text-center",
+        }}
       >
         <TableHeader>
           <TableColumn>Tipo</TableColumn>
@@ -159,7 +163,7 @@ export const Assets = () => {
               <TableCell>{asset.asset_inventory_number}</TableCell>
               <TableCell>{asset.provider_id}</TableCell>
               <TableCell>
-                <div className="flex items-center gap-2">
+                <div className="flex justify-center">
                   <Button variant="link" color="danger">
                     <span
                       className="text-lg text-danger cursor-pointer"

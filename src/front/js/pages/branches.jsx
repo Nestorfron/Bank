@@ -117,10 +117,14 @@ export const Branches = () => {
       </div>
       <Table
         aria-label="Tabla de sucursales"
-        isHeaderSticky
         isStriped
+        isHeaderSticky
         topContent={topContent}
         bottomContent={bottomContent}
+        classNames={{
+          td: "text-center w-32",
+          th: "text-center",
+        }}
       >
         <TableHeader>
           <TableColumn>ID</TableColumn>
@@ -139,7 +143,7 @@ export const Branches = () => {
               <TableCell>{branch.branch_subzone}</TableCell>
               <TableCell>{branch.branch_address}</TableCell>
               <TableCell>
-                <div className="flex items-center gap-2">
+                <div className="flex justify-center">
                   <Button variant="link" color="danger">
                     <span
                       className="text-lg text-danger cursor-pointer"

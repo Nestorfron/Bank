@@ -106,6 +106,10 @@ export const Providers = () => {
         isStriped
         topContent={topContent}
         bottomContent={bottomContent}
+        classNames={{
+          td: "text-center",
+          th: "text-center",
+        }}
       >
         <TableHeader>
           <TableColumn>#</TableColumn>
@@ -122,7 +126,7 @@ export const Providers = () => {
               <TableCell>{provider.rfc}</TableCell>
               <TableCell>{provider.service}</TableCell>
               <TableCell>
-                <div className="flex items-center gap-2">
+                <div className="flex justify-center">
                   <Button
                     variant="link"
                     className="text-lg text-danger cursor-pointer"

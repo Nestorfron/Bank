@@ -130,6 +130,10 @@ export const UsersMB = () => {
         isStriped
         topContent={topContent}
         bottomContent={bottomContent}
+        classNames={{
+          td: "text-center",
+          th: "text-center",
+        }}
       >
         <TableHeader>
           <TableColumn>ID</TableColumn>
@@ -154,7 +158,7 @@ export const UsersMB = () => {
               <TableCell>{userMB.branch_id}</TableCell>
               <TableCell>{userMB.asset_id}</TableCell>
               <TableCell>
-                <div className="flex items-center gap-2">
+                <div className="flex justify-center">
                   <Button variant="link" color="danger">
                     <span
                       className="text-lg text-danger cursor-pointer"
