@@ -1,24 +1,22 @@
 import React from "react";
-import { FormAssets } from "./FormAssets.jsx";
+import { FormUsers } from "./FormUsers.jsx";
 import {
   Button,
   Modal,
   ModalContent,
   ModalHeader,
   ModalBody,
-  ModalFooter,
   useDisclosure,
-  Tooltip,
 } from "@nextui-org/react";
 import { EditIcon } from "../../img/icons/EditIcon.jsx";
-export const EditAssets = ({ asset }) => {
+
+export const EditUsers = ({ user }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [backdrop, setBackdrop] = React.useState("blur");
 
-  if (!asset) {
-    return <p>No se encontró el activo</p>;
+  if (!user) {
+    return <p>No se encontró el usuario</p>;
   }
-
   const openModal = () => onOpen();
 
   return (
@@ -32,10 +30,10 @@ export const EditAssets = ({ asset }) => {
       <Modal backdrop={backdrop} isOpen={isOpen} onClose={onClose}>
         <ModalContent>
           <ModalHeader className="flex flex-col gap-1">
-            Editar Activo
+            Editar Usuario
           </ModalHeader>
           <ModalBody>
-            <FormAssets btnAsset={"Actualizar"} asset={asset} id={asset.id} />
+            <FormUsers btnUser={"Actualizar"} user={user} id={user.id} />
           </ModalBody>
         </ModalContent>
       </Modal>

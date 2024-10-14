@@ -1,11 +1,20 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
-import { Input, Button, Spacer, ModalFooter } from "@nextui-org/react";
+import {
+  Input,
+  Button,
+  Spacer,
+  ModalFooter,
+  Select,
+  SelectItem,
+} from "@nextui-org/react";
 import Swal from "sweetalert2";
+import { i } from "framer-motion/client";
 
 export const FormAssets = ({ id, btnAsset, asset: initialAsset }) => {
   const { store, actions } = useContext(Context);
+  const [provider, setProvider] = useState("");
   const navigate = useNavigate();
   const [asset, setAsset] = useState({
     asset_type: "",
@@ -103,6 +112,13 @@ export const FormAssets = ({ id, btnAsset, asset: initialAsset }) => {
     }
   };
 
+  const getProviderById = (providerId) => {
+    const Provider = store.providers.find(
+      (provider) => provider.id === providerId
+    );
+    setProvider(Provider);
+  };
+
   useEffect(() => {
     const jwt = localStorage.getItem("token");
     if (!jwt) {
@@ -110,8 +126,11 @@ export const FormAssets = ({ id, btnAsset, asset: initialAsset }) => {
       return;
     }
     actions.getAssets();
+    actions.getProviders();
     if (initialAsset) {
+      getProviderById(initialAsset.provider_id);
       setAsset({
+        id: initialAsset.id,
         asset_type: initialAsset.asset_type || "",
         asset_brand: initialAsset.asset_brand || "",
         asset_model: initialAsset.asset_model || "",
@@ -121,6 +140,7 @@ export const FormAssets = ({ id, btnAsset, asset: initialAsset }) => {
       });
     }
   }, []);
+
   return (
     <form onSubmit={handleSubmit}>
       <div className="flex flex-col gap-4">
@@ -169,8 +189,22 @@ export const FormAssets = ({ id, btnAsset, asset: initialAsset }) => {
           onChange={handleChange}
           required
         />
+        <Select
+          label="Selecciona un proveedor"
+          labelPlacement="outside"
+          placeholder={provider ? provider.company_name : "..."}
+          name="provider_id"
+          required
+          value={asset.provider_id}
+          onChange={handleChange}
+        >
+          {store.providers.map((provider) => (
+            <SelectItem key={provider.id} value={provider.id}>
+              {provider.company_name}
+            </SelectItem>
+          ))}
+        </Select>
       </div>
-
       <Spacer />
       <ModalFooter>
         <Button type="submit" color="primary" disabled={loading}>

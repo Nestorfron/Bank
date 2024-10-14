@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { Context } from "../store/appContext";
-import { FormAssets } from "./FormAssets.jsx";
+import { FormMigrations } from "./FormMigrations.jsx";
 import Swal from "sweetalert2";
 import * as XLSX from "xlsx"; // Importamos la librería xlsx para leer el archivo Excel
 import {
@@ -13,7 +13,7 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 
-export const CreateAssets = () => {
+export const CreateMigrations = () => {
   const [file, setFile] = useState(null); // Estado para almacenar el archivo seleccionado
   const [modalVisible, setModalVisible] = useState(false); // Estado para controlar la visibilidad del modal
   const { actions } = useContext(Context);
@@ -50,12 +50,13 @@ export const CreateAssets = () => {
       // Verificamos que los datos tengan el formato correcto
       const [header, ...rows] = jsonData;
       const expectedColumns = [
-        "Tipo",
-        "Marca",
-        "Modelo",
-        "Serial",
-        "Número de Inventario",
+        "Fecha de Instalación",
+        "Fecha de Migración",
+        "Descripción de Migración",
+        "Estado de Migración",
+        "ID de Usuario",
         "Proveedor",
+        "Sucursal",
       ];
 
       // Comprobamos si el archivo tiene todas las columnas necesarias
@@ -80,35 +81,38 @@ export const CreateAssets = () => {
       // Si el formato es correcto, procesamos cada fila
       rows.forEach((row) => {
         const [
-          asset_type,
-          asset_brand,
-          asset_model,
-          asset_serial,
-          asset_inventory_number,
+          installation_date,
+          migration_date,
+          migration_description,
+          migration_status,
+          user_id,
           provider_id,
+          branch_id,
         ] = row;
         console.log(
-          asset_type,
-          asset_brand,
-          asset_model,
-          asset_serial,
-          asset_inventory_number,
-          provider_id
+          installation_date,
+          migration_date,
+          migration_description,
+          migration_status,
+          user_id,
+          provider_id,
+          branch_id
         );
-        actions.add_asset(
-          asset_type,
-          asset_brand,
-          asset_model,
-          asset_serial,
-          asset_inventory_number,
-          provider_id
+        actions.add_migration(
+          installation_date,
+          migration_date,
+          migration_description,
+          migration_status,
+          user_id,
+          provider_id,
+          branch_id
         );
       });
 
       Swal.fire({
         icon: "success",
         title: "Archivo procesado correctamente",
-        text: "Los Activos han sido agregados.",
+        text: "Las sucursales han sido agregadas.",
       });
     };
 
@@ -118,14 +122,14 @@ export const CreateAssets = () => {
   return (
     <>
       <Button auto color="primary" onClick={openModal} size="md">
-        <span> Agregar Activo</span>
+        <span> Agregar Migracion </span>
       </Button>
 
       <Modal backdrop={backdrop} isOpen={isOpen} onClose={onClose}>
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader>Crear Activo</ModalHeader>
+              <ModalHeader>Crear Migracion</ModalHeader>
               <ModalBody>
                 <h5>Cargar Archivo Excel</h5>
                 <Input
@@ -144,9 +148,9 @@ export const CreateAssets = () => {
                   Cargar Archivo Excel
                 </Button>
                 <h5 style={{ marginTop: "20px" }}>
-                  Formulario de Agregar Activo
+                  Formulario de Agregar Migracion
                 </h5>
-                <FormAssets btnAsset={"Crear"} />
+                <FormMigrations btnBranch={"Crear"} />
               </ModalBody>
             </>
           )}

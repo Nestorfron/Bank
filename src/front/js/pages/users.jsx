@@ -1,9 +1,10 @@
-import React, { useContext, useState, useMemo } from "react";
+import React, { useContext, useState, useMemo, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 import Swal from "sweetalert2";
-import { DeleteIcon } from "../../img/icons/DeleteIcon.jsx";
 import { SearchIcon } from "../../img/icons/SearchIcon.jsx";
-
+import { CreateUsers } from "../component/CreateUsers.jsx";
+import { EditUsers } from "../component/EditUsers.jsx";
 import {
   Avatar,
   Button,
@@ -21,6 +22,7 @@ import {
   Pagination,
   Chip,
 } from "@nextui-org/react";
+import useTokenExpiration from "../../../hooks/useTokenExpiration.jsx";
 
 const statusColorMap = {
   active: "success",
@@ -28,11 +30,14 @@ const statusColorMap = {
 };
 
 export const Users = () => {
-  const { store } = useContext(Context);
+  const { store, actions } = useContext(Context);
+  const navigate = useNavigate();
   const [filterValue, setFilterValue] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [page, setPage] = useState(1);
+
+  useTokenExpiration();
 
   const filteredItems = useMemo(() => {
     let filteredUsers = [...store.users];
@@ -56,10 +61,6 @@ export const Users = () => {
     const start = (page - 1) * rowsPerPage;
     return filteredItems.slice(start, start + rowsPerPage);
   }, [page, filteredItems, rowsPerPage]);
-
-  const handleDeleteUser = (userId) => {
-    Swal.fire("User deleted!", "", "success");
-  };
 
   const topContent = (
     <div className="flex justify-between gap-3 items-center">
@@ -92,9 +93,7 @@ export const Users = () => {
           </DropdownMenu>
         </Dropdown>
         <div>
-          <Button color="primary" className="items-center gap-2">
-            Crear Usuario
-          </Button>
+          <CreateUsers />
         </div>
       </div>
     </div>
@@ -106,24 +105,34 @@ export const Users = () => {
     </div>
   );
 
+  useEffect(() => {
+    const jwt = localStorage.getItem("token");
+    if (!jwt) {
+      navigate("/");
+      return;
+    }
+    actions.getMe();
+    actions.getUsers();
+  }, []);
+
   return (
     <>
-      <div className="flex justify-start gap-4 mt-4">
-        {" "}
+      <div className="flex justify-start gap-4 mt-4 mb-4">
         <span className="text-lg font-bold"> Gestor de Usuarios</span>
       </div>
-      {items.length === 0 && (
-        <div className="text-center mt-4">No se encontraron usuarios</div>
-      )}
       <Table
         aria-label="Tabla de usuarios"
         isHeaderSticky
+        isStriped
         topContent={topContent}
         bottomContent={bottomContent}
+        classNames={{
+          td: "text-center",
+          th: "text-center",
+        }}
       >
         <TableHeader>
           <TableColumn>ID</TableColumn>
-          <TableColumn>Avatar</TableColumn>
           <TableColumn>Usuario</TableColumn>
           <TableColumn>Nombre(s)</TableColumn>
           <TableColumn>Apellidos</TableColumn>
@@ -137,14 +146,6 @@ export const Users = () => {
           {items.map((user) => (
             <TableRow key={user.id}>
               <TableCell>{user.id}</TableCell>
-              <TableCell>
-                <Avatar
-                  src={
-                    user.avatar ||
-                    "https://i.pravatar.cc/150?u=a042581f4e29026024d"
-                  }
-                />
-              </TableCell>
               <TableCell>{user.user_name}</TableCell>
               <TableCell>{user.names}</TableCell>
               <TableCell>{user.last_names}</TableCell>
@@ -159,13 +160,7 @@ export const Users = () => {
                 </Chip>
               </TableCell>
               <TableCell>
-                <Button
-                  variant="link"
-                  color="danger"
-                  onClick={() => handleDeleteUser(user.id)}
-                >
-                  <DeleteIcon />
-                </Button>
+                <EditUsers user={user} />
               </TableCell>
             </TableRow>
           ))}

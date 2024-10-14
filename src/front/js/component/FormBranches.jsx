@@ -111,15 +111,13 @@ export const FormBranches = ({ id, btnBranch, branch: initialBranch }) => {
         branch_subzone: initialBranch.branch_subzone || "",
       });
     }
-  }, [initialBranch, actions, navigate]);
+  }, []);
 
   return (
     <form onSubmit={handleSubmit}>
       <div className="flex flex-col gap-4">
         <Input
           label="CR"
-          placeholder="Ingrese el CR"
-          labelPlacement="outside"
           name="branch_cr"
           value={branch.branch_cr}
           onChange={handleChange}
@@ -127,8 +125,6 @@ export const FormBranches = ({ id, btnBranch, branch: initialBranch }) => {
         />
         <Input
           label="Dirección de la Sucursal"
-          placeholder="Ingrese la dirección"
-          labelPlacement="outside"
           name="branch_address"
           value={branch.branch_address}
           onChange={handleChange}
@@ -136,8 +132,6 @@ export const FormBranches = ({ id, btnBranch, branch: initialBranch }) => {
         />
         <Input
           label="Zona"
-          placeholder="Ingrese la zona"
-          labelPlacement="outside"
           name="branch_zone"
           value={branch.branch_zone}
           onChange={handleChange}
@@ -145,8 +139,6 @@ export const FormBranches = ({ id, btnBranch, branch: initialBranch }) => {
         />
         <Input
           label="Subzona"
-          placeholder="Ingrese la subzona"
-          labelPlacement="outside"
           name="branch_subzone"
           value={branch.branch_subzone}
           onChange={handleChange}

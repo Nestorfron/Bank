@@ -9,6 +9,7 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { EditIcon } from "../../img/icons/EditIcon.jsx";
+
 export const EditUsersMB = ({ userMB }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [backdrop, setBackdrop] = React.useState("blur");
@@ -35,7 +36,7 @@ export const EditUsersMB = ({ userMB }) => {
           <ModalBody>
             <FormUsers_MB
               btnUserMB={"Actualizar"}
-              branch={userMB}
+              userMB={userMB}
               id={userMB.id}
             />
           </ModalBody>

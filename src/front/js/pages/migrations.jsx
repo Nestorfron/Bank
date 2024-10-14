@@ -1,11 +1,11 @@
-import React, { useContext, useState, useMemo, useEffect } from "react";
+import React, { useContext, useState, useMemo } from "react";
 import { Context } from "../store/appContext";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { DeleteIcon } from "../../img/icons/DeleteIcon.jsx";
 import { SearchIcon } from "../../img/icons/SearchIcon.jsx";
-import { CreateBranches } from "../component/CreateBranches.jsx";
-import { EditBranches } from "../component/EditBranches.jsx";
+import { CreateMigrations } from "../component/CreateMigration.jsx";
+import { EditMigrations } from "../component/EditMigrations.jsx";
 import {
   Button,
   Table,
@@ -19,7 +19,7 @@ import {
 } from "@nextui-org/react";
 import useTokenExpiration from "../../../hooks/useTokenExpiration.jsx";
 
-export const Branches = () => {
+export const Migrations = () => {
   const { store, actions } = useContext(Context);
   const navigate = useNavigate();
   const [filterValue, setFilterValue] = useState("");
@@ -30,23 +30,39 @@ export const Branches = () => {
   useTokenExpiration();
 
   const filteredItems = useMemo(() => {
-    let filteredBranches = [...store.branchs];
+    let filteredMigrations = [...store.migrations];
 
     if (filterValue) {
-      filteredBranches = filteredBranches.filter((branch) =>
-        branch.branch_cr.toLowerCase().includes(filterValue.toLowerCase())
+      filteredMigrations = filteredMigrations.filter(
+        (migration) =>
+          migration.installation_date
+            .toLowerCase()
+            .includes(filterValue.toLowerCase()) ||
+          migration.migration_date
+            .toLowerCase()
+            .includes(filterValue.toLowerCase()) ||
+          migration.migration_description
+            .toLowerCase()
+            .includes(filterValue.toLowerCase()) ||
+          migration.migration_status
+            .toLowerCase()
+            .includes(filterValue.toLowerCase()) ||
+          migration.provider_id
+            .toLowerCase()
+            .includes(filterValue.toLowerCase()) ||
+          migration.branch_id.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
 
     // Asegúrate de que 'status' esté en tus datos para filtrar adecuadamente
     if (statusFilter !== "all") {
-      filteredBranches = filteredBranches.filter(
-        (branch) => branch.status === statusFilter // Cambia según tus datos
+      filteredMigrations = filteredMigrations.filter(
+        (migration) => migration.status === statusFilter // Cambia según tus datos
       );
     }
 
-    return filteredBranches;
-  }, [store.branchs, filterValue, statusFilter]);
+    return filteredMigrations;
+  }, [store.migrations, filterValue, statusFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
   const items = useMemo(() => {
@@ -54,18 +70,18 @@ export const Branches = () => {
     return filteredItems.slice(start, start + rowsPerPage);
   }, [page, filteredItems, rowsPerPage]);
 
-  const deleteBranch = (id) => {
+  const deleteMigration = (id) => {
     Swal.fire({
       title: "Advertencia",
-      text: "¿Desea eliminar la Sucursal?",
+      text: "¿Desea eliminar la Migracion?",
       icon: "warning",
       showDenyButton: true,
       denyButtonText: "No",
       confirmButtonText: "Sí",
     }).then((click) => {
       if (click.isConfirmed) {
-        actions.deleteBranch(id).then(() => {
-          Swal.fire("Sucursal eliminada correctamente", "", "success");
+        actions.deleteMigration(id).then(() => {
+          Swal.fire("Migracion eliminada correctamente", "", "success");
         });
       }
     });
@@ -75,13 +91,13 @@ export const Branches = () => {
     <div className="flex justify-between gap-3 items-center">
       <div className="flex justify-start gap-3 items-center">
         <span className="text-default-400 text-lg">
-          Total de Sucursales : {store.branchs.length}
+          Total de Migraciones : {store.migrations.length}
         </span>
       </div>
       <div className="flex gap-2 items-center">
         <Input
           isClearable
-          placeholder="Buscar por Sucursal..."
+          placeholder="Buscar por Migracion..."
           value={filterValue}
           onClear={() => setFilterValue("")}
           onValueChange={setFilterValue}
@@ -89,7 +105,7 @@ export const Branches = () => {
           startContent={<SearchIcon />}
         />
         <div>
-          <CreateBranches />
+          <CreateMigrations />
         </div>
       </div>
     </div>
@@ -101,58 +117,55 @@ export const Branches = () => {
     </div>
   );
 
-  useEffect(() => {
-    const jwt = localStorage.getItem("token");
-    if (!jwt) {
-      navigate("/");
-      return;
-    }
-    actions.getMe();
-  }, []);
-
   return (
     <>
       <div className="flex justify-start gap-4 mt-4 mb-4">
-        <span className="text-lg font-bold">Gestor de Sucursales</span>
+        <span className="text-lg font-bold">Gestor de Migraciones</span>
       </div>
       <Table
         aria-label="Tabla de sucursales"
-        isStriped
         isHeaderSticky
+        isStriped
         topContent={topContent}
         bottomContent={bottomContent}
         classNames={{
-          td: "text-center w-32",
+          td: "text-center",
           th: "text-center",
         }}
       >
         <TableHeader>
           <TableColumn>ID</TableColumn>
-          <TableColumn>Cr</TableColumn>
-          <TableColumn>Zona</TableColumn>
-          <TableColumn>SubZona</TableColumn>
-          <TableColumn>Dirección</TableColumn>
+          <TableColumn>Fecha de Instalación</TableColumn>
+          <TableColumn>Fecha de Migración</TableColumn>
+          <TableColumn>Descripción de Migración</TableColumn>
+          <TableColumn>Estado de Migración</TableColumn>
+          <TableColumn>ID de Usuario</TableColumn>
+          <TableColumn>Proveedor</TableColumn>
+          <TableColumn>Sucursal</TableColumn>
           <TableColumn>Acciones</TableColumn>
         </TableHeader>
         <TableBody>
-          {items.map((branch) => (
-            <TableRow key={branch.id}>
-              <TableCell>{branch.id}</TableCell>
-              <TableCell>{branch.branch_cr}</TableCell>
-              <TableCell>{branch.branch_zone}</TableCell>
-              <TableCell>{branch.branch_subzone}</TableCell>
-              <TableCell>{branch.branch_address}</TableCell>
+          {items.map((migration) => (
+            <TableRow key={migration.id}>
+              <TableCell>{migration.id}</TableCell>
+              <TableCell>{migration.installation_date}</TableCell>
+              <TableCell>{migration.migration_date}</TableCell>
+              <TableCell>{migration.migration_description}</TableCell>
+              <TableCell>{migration.migration_status}</TableCell>
+              <TableCell>{migration.user_id}</TableCell>
+              <TableCell>{migration.provider_id}</TableCell>
+              <TableCell>{migration.branch_id}</TableCell>
               <TableCell>
                 <div className="flex justify-center">
                   <Button variant="link" color="danger">
                     <span
                       className="text-lg text-danger cursor-pointer"
-                      onClick={() => deleteBranch(branch.id)}
+                      onClick={() => deleteMigration(migration.id)}
                     >
                       <DeleteIcon />
                     </span>
                   </Button>
-                  <EditBranches branch={branch} />
+                  <EditMigrations migration={migration} />
                 </div>
               </TableCell>
             </TableRow>

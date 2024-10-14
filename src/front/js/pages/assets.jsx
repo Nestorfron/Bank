@@ -1,4 +1,4 @@
-import React, { useContext, useState, useMemo } from "react";
+import React, { useContext, useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 import Swal from "sweetalert2";
@@ -17,6 +17,8 @@ import { DeleteIcon } from "../../img/icons/DeleteIcon.jsx";
 import { SearchIcon } from "../../img/icons/SearchIcon.jsx";
 import { CreateAssets } from "../component/CreateAsset.jsx";
 import { EditAssets } from "../component/EditAssets.jsx";
+import useTokenExpiration from "../../../hooks/useTokenExpiration.jsx";
+
 export const Assets = () => {
   const { store, actions } = useContext(Context);
   const navigate = useNavigate();
@@ -24,6 +26,8 @@ export const Assets = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [page, setPage] = useState(1);
+
+  useTokenExpiration();
 
   const filteredItems = useMemo(() => {
     let filteredAssets = [...store.assets];
@@ -78,20 +82,25 @@ export const Assets = () => {
   };
 
   const topContent = (
-    <div className="flex justify-end gap-3 items-center">
+    <div className="flex justify-between gap-3 items-center">
+      <div className="flex justify-start gap-3 items-center">
+        <span className="text-default-400 text-lg">
+          Total de Activos : {store.assets.length}
+        </span>
+      </div>
       <div className="flex gap-2 items-center">
         <Input
           isClearable
-          placeholder="Buscar..."
+          placeholder="Buscar por Activo..."
           value={filterValue}
           onClear={() => setFilterValue("")}
           onValueChange={setFilterValue}
-          className="w-full sm:max-w-[44%]"
+          className="w-full"
           startContent={<SearchIcon />}
         />
-      </div>
-      <div>
-        <CreateAssets />
+        <div>
+          <CreateAssets />
+        </div>
       </div>
     </div>
   );
@@ -102,19 +111,38 @@ export const Assets = () => {
     </div>
   );
 
+  const getProviderById = (providerId) => {
+    const Provider = store.providers.find(
+      (provider) => provider.id === providerId
+    );
+    return Provider;
+  };
+
+  useEffect(() => {
+    const jwt = localStorage.getItem("token");
+    if (!jwt) {
+      navigate("/");
+      return;
+    }
+    actions.getMe();
+    actions.getAssets();
+  }, []);
+
   return (
     <>
-      <div className="flex justify-start gap-4 mt-4">
+      <div className="flex justify-start gap-4 mt-4 mb-4">
         <span className="text-lg font-bold">Gestor de Activos</span>
       </div>
-      {items.length === 0 && (
-        <div className="text-center mt-4">No se encontraron activos</div>
-      )}
       <Table
         aria-label="Tabla de activos"
         isHeaderSticky
+        isStriped
         topContent={topContent}
         bottomContent={bottomContent}
+        classNames={{
+          td: "text-center",
+          th: "text-center",
+        }}
       >
         <TableHeader>
           <TableColumn>Tipo</TableColumn>
@@ -133,9 +161,9 @@ export const Assets = () => {
               <TableCell>{asset.asset_model}</TableCell>
               <TableCell>{asset.asset_serial}</TableCell>
               <TableCell>{asset.asset_inventory_number}</TableCell>
-              <TableCell>{asset.asset_provider}</TableCell>
+              <TableCell>{asset.provider_id}</TableCell>
               <TableCell>
-                <div className="flex items-center gap-2">
+                <div className="flex justify-center">
                   <Button variant="link" color="danger">
                     <span
                       className="text-lg text-danger cursor-pointer"

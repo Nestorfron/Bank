@@ -1,4 +1,4 @@
-import React, { useContext, useState, useMemo } from "react";
+import React, { useContext, useState, useMemo, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -17,6 +17,7 @@ import {
   Input,
   Pagination,
 } from "@nextui-org/react";
+import useTokenExpiration from "../../../hooks/useTokenExpiration.jsx";
 
 export const UsersMB = () => {
   const { store, actions } = useContext(Context);
@@ -25,6 +26,8 @@ export const UsersMB = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [page, setPage] = useState(1);
+
+  useTokenExpiration();
 
   const filteredItems = useMemo(() => {
     let filteredUsersMB = [...store.usersMB];
@@ -106,19 +109,31 @@ export const UsersMB = () => {
     </div>
   );
 
+  useEffect(() => {
+    const jwt = localStorage.getItem("token");
+    if (!jwt) {
+      navigate("/");
+      return;
+    }
+    actions.getUsersMB();
+    actions.getMe();
+  }, []);
+
   return (
     <>
-      <div className="flex justify-start gap-4 mt-4">
+      <div className="flex justify-start gap-4 mt-4 mb-4">
         <span className="text-lg font-bold">Gestor de Usuarios MB</span>
       </div>
-      {items.length === 0 && (
-        <div className="text-center mt-4">No se encontraron Usuarios MB</div>
-      )}
       <Table
         aria-label="Tabla de Usuarios MB"
         isHeaderSticky
+        isStriped
         topContent={topContent}
         bottomContent={bottomContent}
+        classNames={{
+          td: "text-center",
+          th: "text-center",
+        }}
       >
         <TableHeader>
           <TableColumn>ID</TableColumn>
@@ -143,7 +158,7 @@ export const UsersMB = () => {
               <TableCell>{userMB.branch_id}</TableCell>
               <TableCell>{userMB.asset_id}</TableCell>
               <TableCell>
-                <div className="flex items-center gap-2">
+                <div className="flex justify-center">
                   <Button variant="link" color="danger">
                     <span
                       className="text-lg text-danger cursor-pointer"
