@@ -142,6 +142,7 @@ export const Migrations = () => {
           <TableColumn>ID de Usuario</TableColumn>
           <TableColumn>Proveedor</TableColumn>
           <TableColumn>Sucursal</TableColumn>
+          <TableColumn>Acciones</TableColumn>
         </TableHeader>
         <TableBody>
           {items.map((migration) => (
@@ -154,7 +155,6 @@ export const Migrations = () => {
               <TableCell>{migration.user_id}</TableCell>
               <TableCell>{migration.provider_id}</TableCell>
               <TableCell>{migration.branch_id}</TableCell>
-
               <TableCell>
                 <div className="flex justify-center">
                   <Button variant="link" color="danger">

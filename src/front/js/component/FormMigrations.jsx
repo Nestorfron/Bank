@@ -32,7 +32,6 @@ export const FormMigrations = ({
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
-    console.log("Change detected:", e.target.name, e.target.value);
     setMigration({ ...migration, [e.target.name]: e.target.value });
   };
 
@@ -185,7 +184,7 @@ export const FormMigrations = ({
           required
         >
           {options.map((option) => (
-            <SelectItem key={SelectItem.value} value={option.value}>
+            <SelectItem key={option.value} value={option.value}>
               {option.label}
             </SelectItem>
           ))}
