@@ -1319,6 +1319,14 @@ video {
   width: 8rem;
 }
 
+.w-\[auto\] {
+  width: auto;
+}
+
+.w-\[320\] {
+  width: 320;
+}
+
 .min-w-10 {
   min-width: 2.5rem;
 }
@@ -1389,6 +1397,10 @@ video {
   min-width: min-content;
 }
 
+.min-w-\[280px\] {
+  min-width: 280px;
+}
+
 .max-w-2xl {
   max-width: 42rem;
 }
@@ -1456,6 +1468,18 @@ video {
 
 .max-w-xs {
   max-width: 20rem;
+}
+
+.max-w-\[320\] {
+  max-width: 320;
+}
+
+.max-w-\[320px\] {
+  max-width: 320px;
+}
+
+.max-w-\[500px\] {
+  max-width: 500px;
 }
 
 .flex-1 {
@@ -2794,6 +2818,10 @@ video {
 
 .uppercase {
   text-transform: uppercase;
+}
+
+.capitalize {
+  text-transform: capitalize;
 }
 
 .tabular-nums {

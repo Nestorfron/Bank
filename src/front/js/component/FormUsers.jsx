@@ -32,10 +32,6 @@ export const FormUsers = ({ id, btnUser, user: initialUser }) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
-  const setIs_activeOnOff = (checked) => {
-    setUser({ ...user, is_active: checked });
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     Swal.fire({
@@ -185,8 +181,9 @@ export const FormUsers = ({ id, btnUser, user: initialUser }) => {
         </Select>
         <div className="flex items-center">
           <Switch
-            checked={user.is_active}
-            onChange={(e) => setIs_activeOnOff(e.target.checked)}
+            name="is_active"
+            isSelected={user.is_active}
+            onChange={(e) => setUser({ ...user, is_active: e.target.checked })}
           />
           <label className="ml-2">Activo</label>
         </div>

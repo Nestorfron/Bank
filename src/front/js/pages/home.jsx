@@ -87,7 +87,7 @@ export const Home = () => {
   return (
     <>
       <div className="flex-col w-full mt-10">
-        <Card className="m-auto max-w-full w-[340px] h-[auto]">
+        <Card className="m-auto min-w-[280px] max-w-[320px] h-[auto]">
           <div className="img-container m-auto pb-5">
             <img src={img} alt="DR-App" height={200} width={200} />
           </div>

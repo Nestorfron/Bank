@@ -212,8 +212,10 @@ export const FormUsers_MB = ({ id, btnUserMB, userMB: initialUserMB }) => {
 
         <div className="flex items-center">
           <Switch
-            checked={userMB.is_active}
-            onChange={(e) => setIs_activeOnOff(e.target.checked)}
+            isSelected={userMB.is_active}
+            onChange={(e) =>
+              setUserMB({ ...userMB, is_active: e.target.checked })
+            }
           />
           <label className="ml-2">Activo</label>
         </div>

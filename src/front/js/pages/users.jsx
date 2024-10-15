@@ -54,7 +54,7 @@ export const Users = () => {
     }
 
     return filteredUsers;
-  }, [store.users, filterValue, statusFilter]);
+  }, [filterValue, statusFilter, store.users]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
   const items = useMemo(() => {
@@ -85,11 +85,18 @@ export const Users = () => {
           </DropdownTrigger>
           <DropdownMenu
             selectedKeys={statusFilter}
-            onSelectionChange={setStatusFilter}
+            selectionMode="multiple"
+            onSelectionChange={(e) => setStatusFilter(e)}
           >
-            <DropdownItem key="all">Todos</DropdownItem>
-            <DropdownItem key="active">Activo</DropdownItem>
-            <DropdownItem key="inactive">Inactivo</DropdownItem>
+            <DropdownItem className="capitalize" key="all">
+              Todos
+            </DropdownItem>
+            <DropdownItem className="capitalize" key="active">
+              Activo
+            </DropdownItem>
+            <DropdownItem className="capitalize" key="inactive">
+              Inactivo
+            </DropdownItem>
           </DropdownMenu>
         </Dropdown>
         <div>
@@ -155,6 +162,7 @@ export const Users = () => {
               <TableCell>
                 <Chip
                   color={statusColorMap[user.is_active ? "active" : "inactive"]}
+                  status={user.is_active ? "active" : "inactive"}
                 >
                   {user.is_active ? "Activo" : "Inactivo"}
                 </Chip>
