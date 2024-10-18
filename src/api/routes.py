@@ -87,7 +87,7 @@ def signin():
     return jsonify({"token": user_token}), 200 
 
 
-#####################   GETS     ########################################
+#####################   GETS  ALL   ########################################
 
 #GET ME
 
@@ -145,6 +145,52 @@ def get_migrations():
     migrations_data = [migration.serialize() for migration in migrations]
     return jsonify({"migrations": migrations_data}), 200
 
+#####################   GETS  BY ID  ########################################
+
+#GET BRANCH BY ID
+
+@api.route('/branch/<int:id>', methods=['GET'])
+def get_branch_by_id(id):
+    branch = Branch.query.get(id)
+    if branch is None:
+        return jsonify({"error": "Branch not found"}), 404
+    return jsonify({"branch": branch.serialize()}), 200
+
+#GET PROVIDER BY ID
+
+@api.route('/provider/<int:id>', methods=['GET'])
+def get_provider_by_id(id):
+    provider = Provider.query.get(id)
+    if provider is None:
+        return jsonify({"error": "Provider not found"}), 404
+    return jsonify({"provider": provider.serialize()}), 200
+
+#GET ASSET BY ID
+
+@api.route('/asset/<int:id>', methods=['GET'])
+def get_asset_by_id(id):
+    asset = Assets.query.get(id)
+    if asset is None:
+        return jsonify({"error": "Asset not found"}), 404
+    return jsonify({"asset": asset.serialize()}), 200
+
+#GET USER MB BY ID
+
+@api.route('/userMB/<int:id>', methods=['GET'])
+def get_userMB_by_id(id):
+    userMB = UserMB.query.get(id)
+    if userMB is None:
+        return jsonify({"error": "UserMB not found"}), 404
+    return jsonify({"userMB": userMB.serialize()}), 200
+
+#GET MIGRATION BY ID
+
+@api.route('/migration/<int:id>', methods=['GET'])
+def get_migration_by_id(id):
+    migration = Migration.query.get(id)
+    if migration is None:
+        return jsonify({"error": "Migration not found"}), 404
+    return jsonify({"migration": migration.serialize()}), 200   
 
 #####################  ADD ###################################
 

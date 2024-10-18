@@ -9,6 +9,11 @@ const getState = ({ getStore, getActions, setStore }) => {
       assets: [],
       usersMB: [],
       migrations: [],
+      branch: [],
+      provider: [],
+      asset: [],
+      userMB: [],
+      migration: [],
       role: ["Master", "Admin", "Ingeniero de Campo"],
     },
     actions: {
@@ -257,6 +262,133 @@ const getState = ({ getStore, getActions, setStore }) => {
           if (response.ok) {
             console.log(data);
             setStore({ migrations: data.migrations });
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      },
+
+      ////////////  GET BY ID SECTION //////////////////
+
+      //GET BRANCH BY ID
+
+      getBranchById: async (id) => {
+        const jwt = localStorage.getItem("token");
+        const actions = getActions();
+        try {
+          const response = await fetch(
+            process.env.BACKEND_URL + "/api/branch/" + id,
+            {
+              method: "GET",
+              headers: {
+                authorization: `Bearer ${jwt}`,
+              },
+            }
+          );
+          const data = await response.json();
+          if (response.ok) {
+            console.log(data);
+            setStore({ branch: data.branch });
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      },
+
+      //GET PROVIDER BY ID
+
+      getProviderById: async (id) => {
+        const jwt = localStorage.getItem("token");
+        const actions = getActions();
+        try {
+          const response = await fetch(
+            process.env.BACKEND_URL + "/api/provider/" + id,
+            {
+              method: "GET",
+              headers: {
+                authorization: `Bearer ${jwt}`,
+              },
+            }
+          );
+          const data = await response.json();
+          if (response.ok) {
+            console.log(data);
+            setStore({ provider: data.provider });
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      },
+
+      //GET ASSET BY ID
+
+      getAssetById: async (id) => {
+        const jwt = localStorage.getItem("token");
+        const actions = getActions();
+        try {
+          const response = await fetch(
+            process.env.BACKEND_URL + "/api/asset/" + id,
+            {
+              method: "GET",
+              headers: {
+                authorization: `Bearer ${jwt}`,
+              },
+            }
+          );
+          const data = await response.json();
+          if (response.ok) {
+            console.log(data);
+            setStore({ asset: data.asset });
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      },
+
+      //GET USER MB BY ID
+
+      getUserMBById: async (id) => {
+        const jwt = localStorage.getItem("token");
+        const actions = getActions();
+        try {
+          const response = await fetch(
+            process.env.BACKEND_URL + "/api/userMB/" + id,
+            {
+              method: "GET",
+              headers: {
+                authorization: `Bearer ${jwt}`,
+              },
+            }
+          );
+          const data = await response.json();
+          if (response.ok) {
+            console.log(data);
+            setStore({ userMB: data.userMB });
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      },
+
+      //GET MIGRATION BY ID
+
+      getMigrationById: async (id) => {
+        const jwt = localStorage.getItem("token");
+        const actions = getActions();
+        try {
+          const response = await fetch(
+            process.env.BACKEND_URL + "/api/migration/" + id,
+            {
+              method: "GET",
+              headers: {
+                authorization: `Bearer ${jwt}`,
+              },
+            }
+          );
+          const data = await response.json();
+          if (response.ok) {
+            console.log(data);
+            setStore({ migration: data.migration });
           }
         } catch (error) {
           console.log(error);

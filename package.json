@@ -77,7 +77,10 @@
 	},
 	"dependencies": {
 		"@heroicons/react": "^2.1.5",
+		"@nextui-org/listbox": "^2.1.27",
 		"@nextui-org/react": "^2.4.8",
+		"@nextui-org/system": "^2.2.6",
+		"@nextui-org/theme": "^2.2.11",
 		"@react-google-maps/api": "^2.20.3",
 		"framer-motion": "^11.11.8",
 		"jwt-decode": "^4.0.0",

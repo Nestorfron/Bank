@@ -11,13 +11,32 @@ import {
   CardFooter,
   Image,
   Button,
+  Divider,
+  Link,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
+  Listbox,
+  ListboxItem,
+  ListboxWrapper,
 } from "@nextui-org/react";
 import Map from "../component/Map.jsx";
+import BranchDetails from "../component/branchDetails.jsx";
 
 const Dashboard = () => {
   const { store, actions } = useContext(Context);
   const { theme, setTheme } = useTheme();
   const navigate = useNavigate();
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [selectedKeys, setSelectedKeys] = React.useState(new Set(["text"]));
+
+  const selectedValue = React.useMemo(
+    () => Array.from(selectedKeys).join(", "),
+    [selectedKeys]
+  );
 
   useTokenExpiration();
 
@@ -28,29 +47,54 @@ const Dashboard = () => {
       return;
     }
     actions.getMe();
+    actions.getBranchs();
   }, []);
 
   return (
-    <div className="gap-2 grid grid-cols-12 grid-rows-2 px-8 mt-5 mb-5">
-      <Card className="col-span-12 sm:col-span-4 h-[300px]">
+    <div className="gap-2 grid grid-cols-12 grid-rows-2 px-8 mt-5 mb-5 items-center">
+      <Card className="col-span-12 sm:col-span-7 h-[300px]">
         {" "}
         <Map />
       </Card>
-      <Card className="col-span-12 sm:col-span-4 h-[300px]">
-        <CardHeader className="absolute z-10 top-1 flex-col !items-start">
-          <p className="text-tiny text-white/60 uppercase font-bold">
-            Plant a tree
-          </p>
-          <h4 className="text-white font-medium text-large">
-            Contribute to the planet
-          </h4>
+      <Card className="bg-primary-50 col-span-12 sm:col-span-5 h-[300px]">
+        <CardHeader className="flex gap-3">
+          <div className="flex flex-col">
+            <h3 color="primary" className="font-medium text-2xl">
+              Sucursales
+            </h3>
+          </div>
         </CardHeader>
-        <Image
-          removeWrapper
-          alt="Card background"
-          className="z-0 w-full h-full object-cover"
-          src="https://nextui.org/images/card-example-3.jpeg"
-        />
+        <Divider />
+        <CardBody>
+          <Listbox
+            value={selectedValue}
+            variant="solid"
+            onChange={setSelectedKeys}
+            multiple
+            color="primary"
+            className="w-full"
+            aria-label="Branches"
+          >
+            {store.branchs.map((branch) => {
+              return (
+                <ListboxItem className="p-0 m-0" value={branch.branch_cr}>
+                  <BranchDetails branch={branch} />
+                </ListboxItem>
+              );
+            })}
+          </Listbox>
+        </CardBody>
+        <Divider />
+        <CardFooter>
+          <Link
+            className="text-tiny uppercase font-bold"
+            showAnchorIcon
+            href="/branches"
+            color="primary"
+          >
+            Sucursales.
+          </Link>
+        </CardFooter>
       </Card>
       <Card className="col-span-12 sm:col-span-4 h-[300px]">
         <CardHeader className="absolute z-10 top-1 flex-col !items-start">
