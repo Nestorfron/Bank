@@ -329,6 +329,7 @@ def add_migration():
     migration_status = body.get("migration_status", None)
     provider_id = body.get("provider_id", None)
     branch_id = body.get("branch_id", None)
+    asset_ids = body.get("asset_ids", [])
 
     provider = Provider.query.get(provider_id)
     if provider is None:
@@ -337,12 +338,17 @@ def add_migration():
     if branch is None:
         return jsonify({"error": "branch no encontrado"}), 404 
     
+    assets = Assets.query.filter(Assets.id.in_(asset_ids)).all()
+    if not assets:
+        return jsonify({"error": "activos no encontrados"}), 404
+    
     if installation_date is None or migration_date is None or migration_description is None or migration_status is None or provider_id is None or branch_id is None:
         return jsonify({"error": "faltan datos"}), 400
 
     try:
-        new_migration = Migration(installation_date=installation_date, migration_date=migration_date, migration_description=migration_description, migration_status=migration_status, provider_id=provider.id, branch_id=branch.id, user_id=user_data["id"])
+        new_migration = Migration(installation_date=installation_date, migration_date=migration_date, migration_description=migration_description, migration_status=migration_status, provider_id=provider.id, branch_id=branch.id, user_id=user_data["id"], assets=assets)
         db.session.add(new_migration)
+        print(new_migration)
         db.session.commit()
         return jsonify({"new_migration": new_migration.serialize()}), 201
     except Exception as error:
