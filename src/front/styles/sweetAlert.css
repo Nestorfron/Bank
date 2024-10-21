@@ -1,0 +1,15 @@
+.custom-container {
+  backdrop-filter: blur(14px);
+}
+.popup {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 30px;
+}
+
+.custom-confirm {
+  border-radius: 10px;
+}
+
+.custom-deny {
+  border-radius: 10px;
+}
