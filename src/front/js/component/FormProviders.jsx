@@ -96,7 +96,7 @@ export const FormProviders = ({
         service: initialProvider.service || "",
       });
     }
-  }, [initialProvider, actions, navigate]);
+  }, []);
 
   return (
     <form onSubmit={handleSubmit}>

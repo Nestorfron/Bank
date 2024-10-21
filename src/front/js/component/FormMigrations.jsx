@@ -27,6 +27,7 @@ export const FormMigrations = ({
     migration_status: "",
     provider_id: "",
     branch_id: "",
+    asset_ids: new Set(),
   });
 
   const [loading, setLoading] = useState(false);
@@ -64,7 +65,8 @@ export const FormMigrations = ({
             migration.migration_description,
             migration.migration_status,
             migration.provider_id,
-            migration.branch_id
+            migration.branch_id,
+            migration.asset_ids
           )
         : await actions.add_migration(
             migration.installation_date,
@@ -72,8 +74,10 @@ export const FormMigrations = ({
             migration.migration_description,
             migration.migration_status,
             migration.provider_id,
-            migration.branch_id
+            migration.branch_id,
+            migration.asset_ids
           );
+
       Swal.fire({
         position: "center",
         icon: "success",
@@ -97,6 +101,7 @@ export const FormMigrations = ({
           user_id: "",
           provider_id: "",
           branch_id: "",
+          asset_ids: new Set(),
         });
       }
     } catch (error) {
@@ -137,6 +142,7 @@ export const FormMigrations = ({
       return;
     }
     actions.getMigrations();
+    actions.getAssets();
     if (initialMigration) {
       setMigration({
         installation_date: initialMigration.installation_date || "",
@@ -146,6 +152,7 @@ export const FormMigrations = ({
         user_id: initialMigration.user_id || "",
         provider_id: initialMigration.provider_id || "",
         branch_id: initialMigration.branch_id || "",
+        asset_id: initialMigration.asset_id || "",
       });
     }
   }, []);
@@ -216,11 +223,27 @@ export const FormMigrations = ({
             </SelectItem>
           ))}
         </Select>
+        <Select
+          label="Assets"
+          selectionMode="multiple"
+          placeholder="Select assets"
+          selectedKeys={migration.asset_ids}
+          onSelectionChange={(keys) =>
+            setMigration({ ...migration, asset_ids: keys })
+          }
+        >
+          {store.assets.map((asset) => (
+            <SelectItem key={asset.id} value={asset.id}>
+              {`${asset.asset_type} ${asset.asset_brand} ${asset.asset_serial}`}
+            </SelectItem>
+          ))}
+        </Select>
       </div>
       <Spacer />
       <ModalFooter>
         <Button type="submit" color="primary" disabled={loading}>
           {btnMigration}
+          Crear
         </Button>
       </ModalFooter>
     </form>

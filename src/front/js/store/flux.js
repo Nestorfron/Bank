@@ -561,7 +561,8 @@ const getState = ({ getStore, getActions, setStore }) => {
         migration_description,
         migration_status,
         provider_id,
-        branch_id
+        branch_id,
+        asset_ids
       ) => {
         const jwt = localStorage.getItem("token");
         const actions = getActions();
@@ -581,11 +582,14 @@ const getState = ({ getStore, getActions, setStore }) => {
                 migration_status,
                 provider_id,
                 branch_id,
+                asset_ids: Array.from(asset_ids),
               }),
             }
           );
           if (!response.ok) {
-            console.log(response);
+            const errorData = await response.json();
+            console.error("Error:", errorData);
+            throw new Error(`HTTP error! status: ${response.status}`);
           }
           const data = await response.json();
           actions.getMigrations();

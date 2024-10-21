@@ -16,6 +16,12 @@ import {
   TableColumn,
   Input,
   Pagination,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
 } from "@nextui-org/react";
 import useTokenExpiration from "../../../hooks/useTokenExpiration.jsx";
 
@@ -26,6 +32,15 @@ export const Migrations = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [page, setPage] = useState(1);
+
+  const [selectedAssets, setSelectedAssets] = useState([]);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  const handleOpenModal = (assets) => {
+    console.log(assets);
+    setSelectedAssets(assets);
+    onOpen();
+  };
 
   useTokenExpiration();
 
@@ -50,7 +65,10 @@ export const Migrations = () => {
           migration.provider_id
             .toLowerCase()
             .includes(filterValue.toLowerCase()) ||
-          migration.branch_id.toLowerCase().includes(filterValue.toLowerCase())
+          migration.branch_id
+            .toLowerCase()
+            .includes(filterValue.toLowerCase()) ||
+          migration.asset_ids.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
 
@@ -142,19 +160,29 @@ export const Migrations = () => {
           <TableColumn>ID de Usuario</TableColumn>
           <TableColumn>Proveedor</TableColumn>
           <TableColumn>Sucursal</TableColumn>
+          <TableColumn>Activos</TableColumn>
           <TableColumn>Acciones</TableColumn>
         </TableHeader>
         <TableBody>
           {items.map((migration) => (
             <TableRow key={migration.id}>
               <TableCell>{migration.id}</TableCell>
-              <TableCell>{migration.installation_date}</TableCell>
-              <TableCell>{migration.migration_date}</TableCell>
+              <TableCell>
+                {new Date(migration.installation_date).toLocaleDateString()}
+              </TableCell>
+              <TableCell>
+                {new Date(migration.migration_date).toLocaleDateString()}
+              </TableCell>
               <TableCell>{migration.migration_description}</TableCell>
               <TableCell>{migration.migration_status}</TableCell>
               <TableCell>{migration.user_id}</TableCell>
               <TableCell>{migration.provider_id}</TableCell>
               <TableCell>{migration.branch_id}</TableCell>
+              <TableCell>
+                <Button onClick={() => handleOpenModal(migration.assets)}>
+                  Ver Activos
+                </Button>
+              </TableCell>
               <TableCell>
                 <div className="flex justify-center">
                   <Button variant="link" color="danger">
@@ -172,6 +200,29 @@ export const Migrations = () => {
           ))}
         </TableBody>
       </Table>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader>Activos de Migracion</ModalHeader>
+              <ModalBody>
+                {selectedAssets.map((asset, index) => (
+                  <div key={index}>
+                    <p>Tipo: {asset.asset_type}</p>
+                    <p>Marca: {asset.asset_brand}</p>
+                    <p>Serial: {asset.asset_serial}</p>
+                  </div>
+                ))}
+              </ModalBody>
+              <ModalFooter>
+                <Button color="danger" variant="light" onPress={onClose}>
+                  Cerrar
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </>
   );
 };
